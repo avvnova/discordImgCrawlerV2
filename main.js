@@ -16,6 +16,15 @@ const main = async () => {
         ignoreHTTPSErrors: true,
         slowMo: 0,
     });
+
+    try{
+        if(!fs.existsSync(destFolder)){
+            fs.mkdirSync(destFolder);
+        }
+    } catch(err){
+        console.error(err);
+    }
+
     const pages = await browser.pages();
     const page = pages[0];
     page.setUserAgent('Chrome');
