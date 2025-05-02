@@ -6,7 +6,7 @@ const fs = require('fs');
 const conf_file = "./config.json";
 const rawdata = fs.readFileSync(conf_file);
 const config = JSON.parse(rawdata);
-
+const destFolder = './spider'
 
 const main = async () => {
     const browser = await puppeteer.launch({
@@ -34,6 +34,8 @@ const main = async () => {
     page.on("request", async req => {
         if (req.url().startsWith('https://media.discordapp.net/attachments/') && req.resourceType() === 'image') { //https://media.discordapp.net/attachments/123456789012345678/876543210987654321/IMG_7448.jpg?width=1018&height=1357
             const imageUrl = req.url().split(/\?format=|\?width=/g)[0];
+
+            //put a step here that changes path. win32 to path.posix if we're in linux vs windows.
             const imageName = path.win32.basename(imageUrl);
             download(imageUrl, `./spider/${imageName}`, function (state) {
                 target++;
